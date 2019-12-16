@@ -6,6 +6,7 @@ class Scaffold :
 {
 private:
 	bool autoselect = false;
+	int slot = 0;
 	bool tryScaffold(vec3_t blockBelow);
 	bool findBlock();
 public:
@@ -15,5 +16,6 @@ public:
 	// Inherited via IModule
 	virtual const char* getModuleName() override;
 	virtual void onPostRender() override;
+	void onSendPacket(C_Packet* packet) override;
 };
 

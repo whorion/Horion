@@ -60,15 +60,8 @@ bool Scaffold::tryScaffold(vec3_t blockBelow)
 			i++;
 		}
 		if (foundCandidate) {
-			if (autoselect) {
-				int slot = g_Data.getLocalPlayer()->getSupplies()->selectedHotbarSlot;
-				findBlock();
-				g_Data.getCGameMode()->buildBlock(blok, i);
-				g_Data.getLocalPlayer()->getSupplies()->selectedHotbarSlot = slot;
-			}
-			else {
-				g_Data.getCGameMode()->buildBlock(blok, i);
-			}
+			findBlock();
+			g_Data.getCGameMode()->buildBlock(blok, i);
 			delete blok;
 			
 			return true;
@@ -81,13 +74,13 @@ bool Scaffold::tryScaffold(vec3_t blockBelow)
 bool Scaffold::findBlock() {
 	C_PlayerInventoryProxy* supplies = g_Data.getLocalPlayer()->getSupplies();
 	C_Inventory* inv = supplies->inventory;
-	int slot = supplies->selectedHotbarSlot;
+	slot = supplies->selectedHotbarSlot;
 	for (int n = 0; n < 9; n++)
 	{
 		C_ItemStack* stack = inv->getItemStack(n);
 		if (stack->item != NULL) {
 			if ((*stack->item)->itemId < 256 && (*stack->item)->itemId != 0) {
-				supplies->selectedHotbarSlot = n;
+				slot = n;
 				return true;
 			}
 		}
@@ -129,5 +122,14 @@ void Scaffold::onPostRender()
 			}
 		}
 		
+	}
+}
+
+void Scaffold::onSendPacket(C_Packet* packet) {
+	if (packet->isInstanceOf<C_MobEquipmentPacket>() && this->autoselect)
+	{
+		C_MobEquipmentPacket* p = reinterpret_cast<C_MobEquipmentPacket*>(packet);
+		p->hotbarSlot = this->slot;
+		p->item = *g_Data.getLocalPlayer()->getSupplies()->inventory->getItemStack(this->slot);
 	}
 }

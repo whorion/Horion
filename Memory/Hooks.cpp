@@ -910,15 +910,13 @@ int Hooks::BlockLegacy_getRenderLayer(C_BlockLegacy* a1)
 {
 	static auto oFunc = g_Hooks.BlockLegacy_getRenderLayerHook->GetFastcall<int, C_BlockLegacy*>();
 
-	static IModule* XrayModule = moduleMgr->getModule<Xray>();
-	if (XrayModule == nullptr)
-		XrayModule = moduleMgr->getModule<Xray>();
-	else if (XrayModule->isEnabled()) {
+	static Xray* xray = moduleMgr->getModule<Xray>();
+	if (xray == nullptr)
+		xray = moduleMgr->getModule<Xray>();
+	else if (xray->isEnabled()) {
 		char* text = a1->name.getText();
-		if (strstr(text, "ore") == NULL)
-			if (strcmp(text, "lava") != NULL)
-				if (strcmp(text, "water") != NULL)
-					return 10;
+		if (!(strstr(text, "ore") || strstr(text, "water") || strstr(text, "lava") || strstr(text, "obsidian")))
+			return 10;
 	}
 	return oFunc(a1);
 }

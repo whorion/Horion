@@ -1,7 +1,6 @@
 #include "Xray.h"
 
 
-
 Xray::Xray() : IModule(VK_NUMPAD6, Category::VISUAL, "X-Ray view!")
 {
 }
