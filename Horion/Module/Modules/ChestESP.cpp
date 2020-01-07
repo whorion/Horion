@@ -1,6 +1,6 @@
 #include "ChestESP.h"
 
-ChestESP::ChestESP() : IModule('H', Category::VISUAL, "ESP for chests") {
+ChestESP::ChestESP() : IModule(0x0, Category::VISUAL, "ESP for chests") {
 }
 
 ChestESP::~ChestESP() {

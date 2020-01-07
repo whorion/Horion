@@ -58,6 +58,7 @@
 #include "Modules/NoSlowDown.h"
 #include "Modules/NoWeb.h"
 #include "Modules/Nuker.h"
+#include "Modules/OptifineZoom.h"
 #include "Modules/PacketLogger.h"
 #include "Modules/Phase.h"
 #include "Modules/RainbowSky.h"
